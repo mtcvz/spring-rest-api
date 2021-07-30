@@ -7,9 +7,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
 
 public class Student {
-    private static int counter = 0;
-    //private int student_id;
 
+    private String id;
+
+    //private static int counter = 0;
+    //private int student_id;
 
     @NotNull(message = "Name cannot be null.")
     @Size(min = 2, max = 15, message = "Name must be 2-15 characters.")
@@ -19,13 +21,12 @@ public class Student {
     @Max(value = 18, message = "Age cannot be greater than 18.")
     private int age;
 
-    private UUID student_id;
+    public String getId() {
+        return id;
+    }
 
-    public Student(String name, int age) {
-        this.name = name;
-        this.age = age;
-        //counter++;
-        student_id = UUID.randomUUID();
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -44,7 +45,4 @@ public class Student {
         this.age = age;
     }
 
-    public UUID getStudent_id(){
-        return student_id;
-    }
 }

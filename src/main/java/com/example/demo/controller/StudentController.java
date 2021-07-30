@@ -1,59 +1,52 @@
 package com.example.demo.controller;
-import com.example.demo.exception.StudentNotFoundException;
 import com.example.demo.student.Student;
+import com.example.demo.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
 
-    static HashMap<Integer, Student> studentsMap = new HashMap<Integer,Student>();
-    static Integer id_counter = 0;
     Logger log = LoggerFactory.getLogger(StudentController.class);
 
-    public void addStudent(String name,int age){
-        log.info("[AddStudent] 'Add student' request was received.");
-        id_counter++;
-        studentsMap.put(id_counter,new Student(name,age));
-    }
+    @Autowired
+    StudentService studentService;
 
     @GetMapping
-    public HashMap<Integer,Student> getStudents(){
+    public ResponseEntity<Student> getStudents(){
         log.info("[GetStudents] 'Get students' request was received.");
-        return studentsMap;
+        return new ResponseEntity(studentService.getStudents(),HttpStatus.OK);
     }
 
-    @GetMapping("/{index}")
-    public Student getStudents(@PathVariable("index") int index){
-        log.info("[GetStudents] 'Get student with index' request was received.");
-        if(studentsMap.get(index) == null) throw new StudentNotFoundException("Student with id " + index + " not found.");
-        return studentsMap.get(index);
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudent(@PathVariable("id") String id){
+        log.info("[GetStudents] 'Get student with id' request was received.");
+        return new ResponseEntity(studentService.getStudent(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{index}")
-    public void deleteStudent(@PathVariable("index") int index){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Student> deleteStudent(@PathVariable("id") String id){
         log.info("[DeleteStudent] 'Delete student' request was received.");
-        if(studentsMap.get(index) == null) throw new StudentNotFoundException("Student with id " + index + " not found.");
-        studentsMap.remove(index);
+        studentService.deleteStudent(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{index}/{name}/{age}")
-    public void updateStudent(@PathVariable("index") int index,@PathVariable("name") String name,@PathVariable("age") int age){
+    @PutMapping("/{id}")
+    public ResponseEntity<Student> updateStudent(@Valid @RequestBody Student student,@PathVariable String id){
         log.info("[UpdateStudent] 'Update student' request was received.");
-        if(studentsMap.get(index) == null) throw new StudentNotFoundException("Student with id " + index + " not found.");
-        studentsMap.get(index).setName(name);
-        studentsMap.get(index).setAge(age);
+        return new ResponseEntity(studentService.updateStudent(student,id),HttpStatus.OK);
     }
 
-    @PostMapping("/{name}/{age}")
-    public void postStudent(@Valid @PathVariable("name") String name,@PathVariable("age") int age){
+    @PostMapping
+    public ResponseEntity<Student> postStudent(@Valid @RequestBody Student student){
         log.info("[PostStudent] 'Post student' request was received.");
-        id_counter++;
-        studentsMap.put(id_counter,new Student(name,age));
+        return new ResponseEntity(studentService.addStudent(student),HttpStatus.OK);
     }
 }
