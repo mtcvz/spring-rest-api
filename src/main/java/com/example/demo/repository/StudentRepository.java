@@ -1,8 +1,15 @@
 package com.example.demo.repository;
 
 import com.example.demo.student.Student;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface StudentRepository extends CrudRepository<Student,String> {
+import java.util.List;
+
+public interface StudentRepository extends PagingAndSortingRepository<Student,String > {
+    List<Student> findByGrade(int grade);
+    List<Student> findByBranch(String branch);
+    List<Student> findByGradeAndAndBranch(int grade,String branch);
+    Iterable<Student> findAllByGrade(int grade,Sort sort);
+    Iterable<Student> findAllByBranch(String branch,Sort sort);
 }

@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.exception.NameException;
 import com.example.demo.exception.StudentNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

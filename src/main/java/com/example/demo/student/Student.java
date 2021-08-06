@@ -1,30 +1,37 @@
 package com.example.demo.student;
 
-
-
-import java.util.UUID;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
 
 @Entity
-@Table(name = "studentsDB")
+@Table(name = "studentsdatabase")
 public class Student {
 
     @Id
     private String id;
 
     @NotNull(message = "Name cannot be null.")
-    @Size(min = 2, max = 15, message = "Name must be 2-15 characters.")
+    @Size(min = 2, max = 12, message = "Name must be 2-15 characters.")
     private String name;
 
-    @Min(value = 7, message = "Age cannot be less than 7.")
-    @Max(value = 18, message = "Age cannot be greater than 18.")
-    private int age;
+    @Min(value = 9, message = "Grade cannot be less than 9.")
+    @Max(value = 12, message = "Grade cannot be greater than 12.")
+    private int grade;
+
+    @Min(value = 0, message = "Mark cannot be less than 0.")
+    @Max(value = 100, message = "Mark cannot be greater than 100.")
+    private int mark;
+
+    private String branch;
+
+    public String getBranch(){ return branch; }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
 
     public String getId() {
         return id;
@@ -42,12 +49,16 @@ public class Student {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
+    public int getGrade() {
+        return grade;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setGrade(int age) {
+        this.grade = age;
     }
+
+    public int getMark(){ return mark; }
+
+    public void setMark(int mark){ this.mark = mark; }
 
 }
