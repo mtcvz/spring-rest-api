@@ -1,23 +1,22 @@
 package com.example.demo.controller;
-import com.example.demo.student.Student;
 import com.example.demo.service.StudentService;
+import com.example.demo.student.Student;
+import com.example.demo.service.StudentServiceImpl;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 
+@AllArgsConstructor
+@Slf4j
 @RestController
 @RequestMapping("/students")
 public class StudentController {
 
-    Logger log = LoggerFactory.getLogger(StudentController.class);
-
-    @Autowired
     StudentService studentService;
 
     @GetMapping
@@ -38,6 +37,18 @@ public class StudentController {
         return new ResponseEntity(studentService.getStudentsSorted(),HttpStatus.OK);
     }
 
+    @PostMapping("/search/grade={grade}")
+    public ResponseEntity<Student> getStudentsByGrades(@PathVariable("grade") int grade,@RequestBody ObjectNode objectNode){
+        log.info("[GetStudentsSorted] 'Get Students Sorted' request was received.");
+        return new ResponseEntity(studentService.getStudentsByGrade(grade,objectNode.get("page").intValue(),objectNode.get("size").intValue()),HttpStatus.OK);
+    }
+
+    @GetMapping("/search=best")
+    public ResponseEntity<Student> getBestStudents(){
+        log.info("[GetBestStudents] 'Get Best Students' request was received.");
+        return new ResponseEntity(studentService.getBestStudents(),HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable("id") String id){
         log.info("[DeleteStudent] 'Delete student' request was received.");
@@ -56,24 +67,14 @@ public class StudentController {
         log.info("[PostStudent] 'Post student' request was received.");
         return new ResponseEntity(studentService.addStudent(student),HttpStatus.OK);
     }
-
+/*
     @PostMapping("/search=grade")
     public ResponseEntity<Student> getStudentsByGrade(@RequestBody int grade){
         log.info("[GetStudentByGrade] 'Get Students By Grade' request was received.");
         return new ResponseEntity(studentService.getStudentsByGrade(grade),HttpStatus.OK);
     }
 
-    @PostMapping("/search=branch")
-    public ResponseEntity<Student> getStudentsByBranch(@RequestBody String branch){
-        log.info("[GetStudentByBranch] 'Get Students By Branch' request was received.");
-        return new ResponseEntity(studentService.getStudentsByBranch(branch),HttpStatus.OK);
-    }
-
-    @PostMapping("/search=grade&branch")
-    public ResponseEntity<Student> getStudentsByGradeAndBranch(@RequestBody ObjectNode objectNode){
-        log.info("[GetStudentByGradeAndBranch] 'Get Students By Grade and Branch' request was received.");
-        return new ResponseEntity(studentService.getStudentsByGradeAndBranch(objectNode.get("grade").intValue(),objectNode.get("branch").asText()),HttpStatus.OK);
-    }
+ */
 
     @PostMapping("/search=page")
     public ResponseEntity<Student> getStudentPages(@RequestBody ObjectNode objectNode){
@@ -91,5 +92,10 @@ public class StudentController {
     public ResponseEntity<Student> getStudentsSortedByBranch(@RequestBody String branch){
         log.info("[GetStudentsSortedByBranch] 'Get Students Sorted By Branch' request was received.");
         return new ResponseEntity(studentService.getStudentsSortedByBranch(branch),HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Student> searchStudents(@RequestBody Student student){
+        return new ResponseEntity(studentService.searchStudents(student),HttpStatus.OK);
     }
 }

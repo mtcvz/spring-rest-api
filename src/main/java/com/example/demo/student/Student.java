@@ -1,11 +1,18 @@
 package com.example.demo.student;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "studentsdatabase")
 public class Student {
@@ -27,38 +34,6 @@ public class Student {
 
     private String branch;
 
-    public String getBranch(){ return branch; }
 
-    public void setBranch(String branch) {
-        this.branch = branch;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getGrade() {
-        return grade;
-    }
-
-    public void setGrade(int age) {
-        this.grade = age;
-    }
-
-    public int getMark(){ return mark; }
-
-    public void setMark(int mark){ this.mark = mark; }
 
 }
