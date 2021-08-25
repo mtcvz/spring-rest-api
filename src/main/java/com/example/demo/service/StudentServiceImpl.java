@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.exception.StudentNotFoundException;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.student.Student;
+import com.example.demo.student.StudentSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -98,7 +99,8 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<Student> searchStudents(Student student){
-        return studentRepository.findStudents(student.getName(),student.getGrade(),student.getMark(),student.getBranch());
+    public List<Student> searchStudents(StudentSearch studentSearch){
+        return studentRepository.findStudents(studentSearch.getName(),studentSearch.getGrade(),
+                studentSearch.getMinMark(),studentSearch.getMaxMark(),studentSearch.getBranch());
     }
 }

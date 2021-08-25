@@ -2,6 +2,7 @@ package com.example.demo.controller;
 import com.example.demo.service.StudentService;
 import com.example.demo.student.Student;
 import com.example.demo.service.StudentServiceImpl;
+import com.example.demo.student.StudentSearch;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -95,7 +96,7 @@ public class StudentController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Student> searchStudents(@RequestBody Student student){
-        return new ResponseEntity(studentService.searchStudents(student),HttpStatus.OK);
+    public ResponseEntity<Student> searchStudents(@RequestBody StudentSearch studentSearch){
+        return new ResponseEntity(studentService.searchStudents(studentSearch),HttpStatus.OK);
     }
 }

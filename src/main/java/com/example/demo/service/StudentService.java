@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.student.Student;
+import com.example.demo.student.StudentSearch;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,5 +18,5 @@ public interface StudentService {
     Iterable<Student> getStudentsSortedByGrade(int grade);
     Iterable<Student> getStudentsSortedByBranch(String branch);
     List<Student> getBestStudents();
-    List<Student> searchStudents(Student student);
+    List<Student> searchStudents(StudentSearch studentSearch);
 }

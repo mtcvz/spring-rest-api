@@ -19,7 +19,8 @@ public interface StudentRepository extends PagingAndSortingRepository<Student,St
     @Query("SELECT student from Student student where student.mark > 80 order by student.mark desc")
     List<Student> findBestStudents();
     @Query("SELECT student from Student student where (:name is null or student.name LIKE %:name%) " +
-            "and (:grade = 0 or student.grade = :grade) and (:mark = 0 or student.mark = :mark) and " +
-            "(:branch is null or student.branch = :branch)" )
-    List<Student> findStudents(@Param("name") String name, @Param("grade") int grade, @Param("mark") int mark, @Param("branch")String branch);
+            "and (:grade = 0 or student.grade = :grade) and (:minMark = 0 or student.mark > :minMark) and " +
+            "(:maxMark = 0 or student.mark < :maxMark) and (:branch is null or student.branch = :branch)" )
+    List<Student> findStudents(@Param("name") String name, @Param("grade") int grade,
+                                     @Param("minMark") int minMark, @Param("maxMark") int maxMark, @Param("branch")String branch);
 }
